@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GottaMix.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,9 +30,13 @@ namespace GottaMix
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // SignalRの利用
+            services.AddSignalR();
+            // Gpioのピン状態をリスニングするハブをDI
+            services.AddSingleton<GpioHub, GpioHub>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +53,7 @@ namespace GottaMix
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseSignalR(x => x.MapHub<GpioHub>("/gpio"));
 
             app.UseMvc(routes =>
             {

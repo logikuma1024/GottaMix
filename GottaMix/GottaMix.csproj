@@ -6,6 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.0.1" />
+    <PackageReference Include="System.Reactive" Version="4.0.0" />
+    <PackageReference Include="Unosquare.Raspberry.IO" Version="0.15.0" />
   </ItemGroup>
 
 </Project>

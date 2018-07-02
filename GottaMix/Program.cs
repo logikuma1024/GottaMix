@@ -19,6 +19,8 @@ namespace GottaMix
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                // 5000番ポートでHTTPアクセスを許可
+                .UseUrls("http://*:5000/")
                 .UseStartup<Startup>();
     }
 }
