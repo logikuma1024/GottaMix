@@ -16,19 +16,19 @@ namespace GottaMix.Controllers
         // Injection
         private GpioHub _hub;
 
-        public HomeController(GpioHub chatHub)
-        {
-            _hub = chatHub;
-        }
+        //public HomeController(GpioHub gpioHub)
+        //{
+        //    _hub = gpioHub;
+        //}
 
         public IActionResult Index()
         {
-            var pinStates = getPinState();
+            // var pinStates = getPinState();
 
-            ViewData["Pin8Value"] = pinStates.First(x => x.pinNo == 8).pinValue;
-            ViewData["Pin22Value"] = pinStates.First(x => x.pinNo == 22).pinValue;
-
-            ViewData["ButtonCount"] = _hub.GetCurrentVal();
+            // ViewData["Pin8Value"] = pinStates.First(x => x.pinNo == 8).pinValue;
+            // ViewData["Pin22Value"] = pinStates.First(x => x.pinNo == 22).pinValue;
+            // ViewData["ButtonCount"] = _hub.GetCurrentVal();
+            // ViewData["Motion"] = _hub.GetCurrentVal();
 
             return View();
         }
@@ -120,18 +120,18 @@ namespace GottaMix.Controllers
             return RedirectToAction("Index");
         }
 
-        /// <summary>
-        /// 音階
-        /// </summary>
-        public enum Pitch
-        {
-            Do, Re, Mi, Fa, So, Ra, Si
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+    }
+
+    /// <summary>
+    /// 音階
+    /// </summary>
+    public enum Pitch
+    {
+        Do, Re, Mi, Fa, So, Ra, Si
     }
 }

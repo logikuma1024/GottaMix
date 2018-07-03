@@ -4,60 +4,43 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="row">
-    <div class="col-md-3">
-        <div id="current">@ViewData["ButtonCount"]</div>
-        <div id="motion"></div>
-    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-7">
+            <h2>LED STATE MONITOR</h2>
+            <a href="#" class="btn-round btn-round-red-off">RED OFF</a>
+            <a href="#" class="btn-round btn-round-yellow-on">YELLOW ON</a>
+            <a href="#" class="btn-round btn-round-green-off">GREEN OFF</a>
 
-    <table class="table table-hover table-responsive">
-        <thead>
-            <tr>
-                <th>GPIO Pin No. (BCM)</th>
-                <th>GPIO Pin No. (wri)</th>
-                <th>Led Color</th>
-                <th>State</th>
-                <th>Operation</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>2</td>
-                <td>8</td>
-                <td>Yellow</td>
-                <td>@ViewData["Pin8Value"]</td>
-                <td>
-                    <a href="@Url.Action("ChangeLed","Home", new {pinNo = 8, isOn = true})"
-                       class="btn btn-info btn-sm">LIGHT ON</a>
-                    <a href="@Url.Action("ChangeLed","Home", new {pinNo = 8, isOn = false})"
-                       class="btn btn-default btn-sm">LIGHT OFF</a>
-                </td>
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>22</td>
-                <td>Red</td>
-                <td>@ViewData["Pin22Value"]</td>
-                <td>
-                    <a href="@Url.Action("ChangeLed","Home", new {pinNo = 22, isOn = true})"
-                       class="btn btn-info btn-sm">LIGHT ON</a>
-                    <a href="@Url.Action("ChangeLed","Home", new {pinNo = 22, isOn = false})"
-                       class="btn btn-default btn-sm">LIGHT OFF</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+            <h2>SOUND BOARD</h2>
+            <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Do })" class="key-btn key-btn-do">Do</a>
+            <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Re })" class="key-btn key-btn-re">Re</a>
+            <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Mi })" class="key-btn key-btn-mi">Mi</a>
+            <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Fa })" class="key-btn key-btn-fa">Fa</a>
+            <a href="@Url.Action("Beep","Home", new { pitch = Pitch.So })" class="key-btn key-btn-so">So</a>
+            <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Ra })" class="key-btn key-btn-ra">Ra</a>
+            <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Si })" class="key-btn key-btn-si">Si</a>
+        </div>
 
-    <div class="col-md-3">
-        <h2>Alerm Test</h2>
-        <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Do })" class="btn btn-info btn-sm">Do</a>
-        <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Re })" class="btn btn-info btn-sm">Re</a>
-        <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Mi })" class="btn btn-info btn-sm">Mi</a>
-        <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Fa })" class="btn btn-info btn-sm">Fa</a>
-        <a href="@Url.Action("Beep","Home", new { pitch = Pitch.So })" class="btn btn-info btn-sm">So</a>
-        <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Ra })" class="btn btn-info btn-sm">Ra</a>
-        <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Si })" class="btn btn-info btn-sm">Si</a>
+        <div class="col-sm-5">
+            <h2>INPUT MODULE</h2>
+            <div class="row center-block">
+                <div id="current" class="box">
+                    <span class="box-title">SWITCH COUNTER</span>
+                    <p class="number">@*@ViewData["ButtonCount"]*@1</p>
+                </div>
+
+                <div id="current" class="box">
+                    <span class="box-title">MOTION SENSOR</span>
+                    <p class="number">@*@ViewData["Motion"]*@Ditected</p>
+                </div>
+
+                <div align="right">
+                    <img src="~/images/rogo.png" />
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<script src="~/js/gpiohub.js"></script>
+@*<script src="~/js/gpiohub.js"></script>*@

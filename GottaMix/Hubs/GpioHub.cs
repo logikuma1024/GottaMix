@@ -91,6 +91,12 @@ namespace GottaMix.Hubs
         public int GetCurrentVal() => SwitchCount;
 
         /// <summary>
+        /// 現在のモーションセンサ状態
+        /// </summary>
+        /// <returns></returns>
+        public bool GetCurrentMotion() => Motion;
+
+        /// <summary>
         /// SignalR呼び出し（現在のスイッチON回数取得）
         /// </summary>
         /// <returns></returns>
