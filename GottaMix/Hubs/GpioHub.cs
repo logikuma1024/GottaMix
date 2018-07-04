@@ -28,12 +28,27 @@ namespace GottaMix.Hubs
         /// <summary>
         /// スイッチのON回数
         /// </summary>
-        private int SwitchCount;
+        public int SwitchCount { get; set; }
 
         /// <summary>
         /// モーションセンサの状態
         /// </summary>
-        private bool Motion;
+        public bool IsDitected { get; set; }
+
+        /// <summary>
+        /// 赤色LEDの状態
+        /// </summary>
+        public bool IsRedOn { get; set; }
+
+        /// <summary>
+        /// 黄色LEDの状態
+        /// </summary>
+        public bool IsYellowOn { get; set; }
+
+        /// <summary>
+        /// 緑色LEDの状態
+        /// </summary>
+        public bool IsGreenOn { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -47,8 +62,14 @@ namespace GottaMix.Hubs
                 this.GpioValueList = Pi.Gpio.Pins.Select(x => x.ReadValue()).ToList();
                 // タクトスイッチのON回数をリセット
                 this.SwitchCount = 0;
+                // GPIOピン3番（赤色LED）の値をリセット
+                this.IsRedOn = Pi.Gpio.Pins[3].Read();
+                // GPIOピン21番（黄色LED）の値をリセット
+                this.IsYellowOn = Pi.Gpio.Pins[21].Read();
+                // GPIOピン22番（緑色LED）の値をリセット
+                this.IsGreenOn = Pi.Gpio.Pins[22].Read();
                 // モーションセンサスイッチの状態をリセット
-                this.Motion = Pi.Gpio.Pins[6].Read();
+                this.IsDitected = Pi.Gpio.Pins[26].Read();
             }
 
             // 初期化
@@ -63,13 +84,22 @@ namespace GottaMix.Hubs
                 .Where(x => !x.Item1.SequenceEqual(x.Item2))
                 // 実行
                 .Subscribe(x => {
-                    // GPIOピン4番（タクトスイッチ）のONを検出する
-                    if (x.Item2[4] == GpioPinValue.High)
+                    // GPIOピン25番（タクトスイッチ）のONを検出する
+                    if (x.Item2[25] == GpioPinValue.High)
                     {
                         SwitchCount++;
                     }
-                    // GPIOピン6番（モーションセンサスイッチ）の状態をセットする
-                    Motion = x.Item2[6] == GpioPinValue.High;
+                    // GPIOピン3番（赤色LED）の値を検出する
+                    IsRedOn = x.Item2[3] == GpioPinValue.High;
+
+                    // GPIOピン21番（黄色LED）の値を検出する
+                    IsYellowOn = x.Item2[21] == GpioPinValue.High;
+
+                    // GPIOピン22番（緑色LED）の値を検出する
+                    IsGreenOn = x.Item2[22] == GpioPinValue.High;
+
+                    // GPIOピン26番（モーションセンサスイッチ）の状態をセットする
+                    IsDitected = x.Item2[26] == GpioPinValue.High;
                 });
         }
 
@@ -85,21 +115,9 @@ namespace GottaMix.Hubs
         }
 
         /// <summary>
-        /// スイッチの押下回数を取得
-        /// </summary>
-        /// <returns></returns>
-        public int GetCurrentVal() => SwitchCount;
-
-        /// <summary>
-        /// 現在のモーションセンサ状態
-        /// </summary>
-        /// <returns></returns>
-        public bool GetCurrentMotion() => Motion;
-
-        /// <summary>
         /// SignalR呼び出し（現在のスイッチON回数取得）
         /// </summary>
         /// <returns></returns>
-        public Task GetSwitchCount() => Clients.All.SendAsync("Receive", SwitchCount, Motion);
+        public Task GetSwitchCount() => Clients.All.SendAsync("Receive", SwitchCount, IsDitected, IsRedOn, IsYellowOn, IsGreenOn);
     }
 }

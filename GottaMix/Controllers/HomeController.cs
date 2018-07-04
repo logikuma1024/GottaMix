@@ -16,48 +16,48 @@ namespace GottaMix.Controllers
         // Injection
         private GpioHub _hub;
 
-        //public HomeController(GpioHub gpioHub)
-        //{
-        //    _hub = gpioHub;
-        //}
+        public HomeController(GpioHub gpioHub)
+        {
+            _hub = gpioHub;
+        }
 
         public IActionResult Index()
         {
-            // var pinStates = getPinState();
+            var pinStates = getPinState();
 
-            // ViewData["Pin8Value"] = pinStates.First(x => x.pinNo == 8).pinValue;
-            // ViewData["Pin22Value"] = pinStates.First(x => x.pinNo == 22).pinValue;
-            // ViewData["ButtonCount"] = _hub.GetCurrentVal();
-            // ViewData["Motion"] = _hub.GetCurrentVal();
+            // FIXME: そのうち入力はすべてハブクラスへすげ替え
+            ViewData["RedClass"] = _hub.IsRedOn ? "btn-round-red-on" : "btn-round-red-off";
+            ViewData["RedName"] = _hub.IsRedOn ? "RED ON" : "RED OFF";
+            ViewData["YellowClass"] = _hub.IsYellowOn ? "btn-round-yellow-on" : "btn-round-yellow-off";
+            ViewData["YellowName"] = _hub.IsRedOn ? "YELLOW ON" : "YELLOW OFF";
+            ViewData["GreenClass"] = _hub.IsGreenOn ? "btn-round-green-on" : "btn-round-green-off";
+            ViewData["GreenName"] = _hub.IsRedOn ? "GREEN ON" : "GREEN OFF";
+            ViewData["ButtonCount"] = _hub.SwitchCount;
+            ViewData["Ditected"] = _hub.IsDitected ? "Ditected" : "None";
 
             return View();
         }
 
         /// <summary>
-        /// LEDを指定状態に変更します
+        /// LEDの状態を変更します
         /// </summary>
         /// <returns></returns>
-        public IActionResult ChangeLed(int pinNo, bool isOn)
+        public IActionResult ToggleLed(int pinNo)
         {
-            // make pin operator from 'bcm' pin no
+            // ピン状態を[wiringPi]の番号で取得する
             var pin = Pi.Gpio[pinNo];
 
-            // set pinmode 'output'
+            // LEDを点灯させるため、ピンを出力方向にする
             pin.PinMode = GpioPinDriveMode.Output;
 
-            // change value
-            pin.Write(isOn);
+            // ピン状態を現在と逆転
+            pin.Write(!pin.Read());
 
-            // get PinMode
+            // デバッグ出力
             var gpioValue = pin.ReadValue();
             Console.WriteLine($"pinNo:{pinNo} / value:{gpioValue}");
 
             return RedirectToAction("Index");
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace GottaMix.Controllers
         /// <returns></returns>
         public IActionResult Beep(Pitch pitch)
         {
-            var pin = Pi.Gpio[3];
+            var pin = Pi.Gpio[29];
 
             Console.WriteLine("Sound On");
 
@@ -111,7 +111,7 @@ namespace GottaMix.Controllers
                     break;
             }
 
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(800);
 
             pin.SoftToneFrequency = 0;
 

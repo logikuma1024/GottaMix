@@ -44,9 +44,9 @@ body {
     transition: .4s;
 }
 
-    .btn-round:hover {
-        border-style: dashed;
-    }
+.btn-round:hover {
+    border-style: dashed;
+}
 
 .btn-round-red-off {
     background: #800000;

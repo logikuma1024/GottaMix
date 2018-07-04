@@ -5,17 +5,48 @@ const connection = new signalR.HubConnectionBuilder()
     .build();
 
 //--- 受信したときの処理
-connection.on('Receive', (no, data) => {
-    document.getElementById('current').textContent = no;
-    document.getElementById('motion').textContent = data;
+connection.on('Receive', (SwitchCount, IsDitected, IsRedOn, IsYellowOn, IsGreenOn) => {
+
+    console.log('signal-recieve');
+
+    document.getElementById('switch-current').textContent = SwitchCount;
+    document.getElementById('motion-current').textContent = IsDitected ? 'Ditected' : 'None';
+
+    // LEDのCSS初期化
+    $('#red-led').addClass('btn-round-red-off');
+    $('#red-led').removeClass('btn-round-red-on');
+    document.getElementById('red-led').textContent = 'RED OFF';
+
+    $('#yellow-led').addClass('btn-round-yellow-off');
+    $('#yellow-led').removeClass('btn-round-yellow-on');
+    document.getElementById('yellow-led').textContent = 'YELLOW OFF';
+
+    $('#green-led').addClass('btn-round-green-off');
+    $('#green-led').removeClass('btn-round-green-on');
+    document.getElementById('green-led').textContent = 'GREEN OFF';
+
+    // LEDの状態を反映
+    if (IsRedOn) {
+        $('#red-led').addClass('btn-round-red-on');
+        document.getElementById('red-led').textContent = 'RED ON';
+    }
+
+    if (IsYellowOn) {
+        $('#yellow-led').addClass('btn-round-yellow-on');
+        document.getElementById('yellow-led').textContent = 'YELLOW ON';
+    }
+
+    if (IsGreenOn) {
+        $('#green-led').addClass('btn-round-green-on');
+        document.getElementById('green-led').textContent = 'GREEN ON';
+    }
 });
 
 $(function () {
     setInterval(function () {
-        console.log('aa');
-        var current = document.getElementById('current').value;
+        console.log('signal-submit');
         connection.invoke('GetSwitchCount').catch(e => console.log(e));
-    }, 500);
+    }, 200);
 });
 
 //--- ボタンをクリックしたらデータを送信

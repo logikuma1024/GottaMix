@@ -6,11 +6,11 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-6">
             <h2>LED STATE MONITOR</h2>
-            <a href="#" class="btn-round btn-round-red-off">RED OFF</a>
-            <a href="#" class="btn-round btn-round-yellow-on">YELLOW ON</a>
-            <a href="#" class="btn-round btn-round-green-off">GREEN OFF</a>
+            <a id="red-led" href="@Url.Action("ToggleLed","Home", new { pinNo = 3 })" class="btn-round btn-round-red-off">RED OFF</a>
+            <a id="yellow-led" href="@Url.Action("ToggleLed","Home", new { pinNo = 21 })" class="btn-round btn-round-yellow-off">YELLOW OFF</a>
+            <a id="green-led" href="@Url.Action("ToggleLed","Home", new { pinNo = 22 })" class="btn-round btn-round-green-off">GREEN OFF</a>
 
             <h2>SOUND BOARD</h2>
             <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Do })" class="key-btn key-btn-do">Do</a>
@@ -22,17 +22,17 @@
             <a href="@Url.Action("Beep","Home", new { pitch = Pitch.Si })" class="key-btn key-btn-si">Si</a>
         </div>
 
-        <div class="col-sm-5">
+        <div class="col-sm-6">
             <h2>INPUT MODULE</h2>
             <div class="row center-block">
-                <div id="current" class="box">
+                <div class="box">
                     <span class="box-title">SWITCH COUNTER</span>
-                    <p class="number">@*@ViewData["ButtonCount"]*@1</p>
+                    <p id="switch-current" class="number">@ViewData["ButtonCount"]</p>
                 </div>
 
-                <div id="current" class="box">
+                <div class="box">
                     <span class="box-title">MOTION SENSOR</span>
-                    <p class="number">@*@ViewData["Motion"]*@Ditected</p>
+                    <p id="motion-current" class="number">@ViewData["Ditected"]</p>
                 </div>
 
                 <div align="right">
@@ -43,4 +43,4 @@
     </div>
 </div>
 
-@*<script src="~/js/gpiohub.js"></script>*@
+<script src="~/js/gpiohub.js"></script>
