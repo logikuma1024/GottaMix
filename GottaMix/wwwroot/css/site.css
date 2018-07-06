@@ -41,7 +41,6 @@ body {
     vertical-align: middle;
     overflow: hidden;
     border: solid 2px rgba(255, 255, 255, 0.47);
-    transition: .4s;
 }
 
 .btn-round:hover {
